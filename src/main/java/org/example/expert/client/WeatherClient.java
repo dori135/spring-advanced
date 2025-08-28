@@ -18,10 +18,14 @@ public class WeatherClient {
 
     private final RestTemplate restTemplate;
 
+
+    // 생성자
     public WeatherClient(RestTemplateBuilder builder) {
         this.restTemplate = builder.build();
     }
 
+
+    // 오늘 날씨
     public String getTodayWeather() {
         ResponseEntity<WeatherDto[]> responseEntity =
                 restTemplate.getForEntity(buildWeatherApiUri(), WeatherDto[].class);
@@ -34,7 +38,7 @@ public class WeatherClient {
             throw new ServerException("날씨 데이터가 없습니다.");
         }
 
-
+        // 오늘 날짜
         String today = getCurrentDate();
 
         for (WeatherDto weatherDto : weatherArray) {
@@ -46,6 +50,8 @@ public class WeatherClient {
         throw new ServerException("오늘에 해당하는 날씨 데이터를 찾을 수 없습니다.");
     }
 
+
+    // 여러 파라미터들을 연결하여 Uri 형태로 생성
     private URI buildWeatherApiUri() {
         return UriComponentsBuilder
                 .fromUriString("https://f-api.github.io")
@@ -55,6 +61,7 @@ public class WeatherClient {
                 .toUri();
     }
 
+    // 오늘 날짜
     private String getCurrentDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
         return LocalDate.now().format(formatter);

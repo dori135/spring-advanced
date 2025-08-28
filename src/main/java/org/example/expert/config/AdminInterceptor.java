@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.time.LocalDateTime;
 
+// interceptor 방식
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
 
