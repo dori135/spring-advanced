@@ -42,7 +42,7 @@ public class AdminApiLoggingAspect {
         logger.info("[Admin API Request] userId={}, role={}, method={}, time={}, body={}",
                 userId, userRole, methodName, LocalDateTime.now(), requestBody);
 
-        /* interceptor 와 중복되는 예외처리를 하게 됨 따라서 AOP는 로깅용으로만 사용
+        /* 주석을 풀면 interceptor 와 중복되는 예외처리를 하게 됨 따라서 AOP는 로깅용으로만 사용
         if (userRole != UserRole.ADMIN) {
             throw new RuntimeException("ADMIN만 접근할 수 있습니다.");
         }
