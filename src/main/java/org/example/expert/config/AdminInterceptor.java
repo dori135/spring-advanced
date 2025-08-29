@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 // interceptor 방식
@@ -19,14 +20,15 @@ public class AdminInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request,
-                             @NonNull HttpServletResponse response,
-                             @NonNull Object handler) {
+                             @NonNull HttpServletResponse httpResponse,
+                             @NonNull Object handler) throws IOException {
 
         UserRole userRole = UserRole.of((String) request.getAttribute("userRole"));
 
         // 1. ADMIN 권한 체크
         if (userRole != UserRole.ADMIN) {
-            throw new RuntimeException("ADMIN만 접근할 수 있습니다.");
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "ADMIN만 접근할 수 있습니다.");
+            return false;
         }
 
         Long userId = (Long) request.getAttribute("userId");
